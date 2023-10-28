@@ -75,7 +75,7 @@ router.delete('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   // Extract form data from the request body
   const formData = {
-    name: req.body.Name,
+    Name: req.body.Name,
     Brand: req.body.Brand,
     UseByDate: req.body.UseByDate,
     AVGTimeToFinish: req.body.AVGTimeToFinish,

@@ -6,7 +6,7 @@ mongoose.connect('mongodb+srv://MacCready:PublicPassword@publichouseterminal.a8m
 
 // defining the Schema of the documents in the collection
 const foodSchema = {
-    name: String,
+    Name: String,
     Brand: String,
     UseByDate: String,
     AVGTimeToFinish: String,
