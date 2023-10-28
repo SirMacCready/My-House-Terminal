@@ -1,8 +1,14 @@
+// Import the required Express.js library
 const express = require('express');
+
+// Create an Express Router
 const router = express.Router();
 
+// Define a GET route for the root path ('/')
 router.get('/', async (req, res) => {
-        res.render('index');
+    // Render the 'index' view
+    res.render('index');
 });
 
+// Export the router to make it available to other parts of the application
 module.exports = router;

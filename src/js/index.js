@@ -38,7 +38,19 @@ getAPIData()
 getNewsData()
   .then(data => {
     let randomIndex = Math.floor(Math.random() * data.articles.length);
-    $('#news').text(data.articles[randomIndex].title);
+    let article = data.articles[randomIndex];
+    
+    // Set the text of #news to the article title
+    $('#news').text(article.title);
+    
+    // Create an anchor element and set its href and text properties
+    let link = $('<a>')
+        .attr('href', article.url)
+        .text('Link to article');
+    
+    // Append the anchor element to #news
+    $('.newslinks').append(link);
+    
   })
   .then(data => {
     loadWebsite();

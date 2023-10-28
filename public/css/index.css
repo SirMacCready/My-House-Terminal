@@ -31,6 +31,8 @@ a:hover {
 .leftLink {
    width: 300px;
    font-size: 22px;
+   border-bottom: 2px solid green ;
+   border-right: 2px solid green ;
 }
 .right {
    border: 2px solid green ;
@@ -47,8 +49,8 @@ a:hover {
 
 .clock {
   font-size: 30px;
-  text-align: left;
-  position: absolute;
+  border-bottom: 2px solid green ;
+  text-align: right;
   right: 1%;
   top: 150px;
 }
@@ -58,4 +60,10 @@ a:hover {
    margin-left: 75%;
    word-wrap: break-word; /* Enable word wrapping to prevent overflow */
    max-width: 2000px; /* Set the maximum width to 100px */
+}
+.newslinks {
+   border: 2px solid green ;
+   border-top: 0px;
+   margin-left: 91%;
+
 }

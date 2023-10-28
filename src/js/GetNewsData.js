@@ -1,4 +1,6 @@
+// function to get the News data from the API
 function getNewsData() {
+    //API URL 
     var url = 'https://newsapi.org/v2/top-headlines?' +
               'country=fr&' +
               'apiKey=9423b3ae7d2b4b57b47dfd2cd796788a';

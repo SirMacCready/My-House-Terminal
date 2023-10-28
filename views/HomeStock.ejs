@@ -18,21 +18,20 @@
     </form>
     <div class="separation"></div>
     
-    <form method="POST" action="/homestock"> <!-- Updated action attribute -->
+    <form method="POST" action="/homestock"> 
         <input type="text" name="Name" id="Name" placeholder="Name" required>
         
-        <input type="Brand" name="Brand" id="Brand" placeholder="Brand Name"  required> <!-- Correct input type and name attribute -->
+        <input type="Brand" name="Brand" id="Brand" placeholder="Brand Name"  required> 
         
-        <input type="text" name="UseByDate" id="UseByDate" placeholder="Use-By Date" required> <!-- Correct input type and name attribute -->
+        <input type="text" name="UseByDate" id="UseByDate" placeholder="Use-By Date" required> 
         
-        <input type="text" name="AVGTimeToFinish" id="AVGTimeToFinish" placeholder="Average Time to Finish"  required> <!-- Correct input type and name attribute -->
+        <input type="text" name="AVGTimeToFinish" id="AVGTimeToFinish" placeholder="Average Time to Finish"  required> 
         
         <input type="number" id="Quantity" name="Quantity" placeholder="Quantity"  min="0" max="100" step="1" required>
         
         <input type="text" name="Place" id="Place" placeholder="Place"  required> 
         
         <input type="text" name="Type" id="Type" placeholder="Type"  required> 
- <!-- Correct input type and name attribute -->
         
         <button type="submit">Add Item</button>
     </form>
@@ -46,7 +45,7 @@
         <h3 class="foodlist">UseByDate: <%= food.Quantity %></h3>
         <h3 class="foodlist">Place: <%= food.Place %></h3>
         <h3 class="foodlist">Type: <%= food.Type %></h3>
-        <button class="deleteButton" data-id="<%= food._id %>">Delete</button> <!-- Correct button class and id attribute -->
+        <button class="deleteButton" data-id="<%= food._id %>">Delete</button> 
         <div class="separation"></div>
     <% })}%>
     <h2 class="foodlist"> No more things to show here</h2>
