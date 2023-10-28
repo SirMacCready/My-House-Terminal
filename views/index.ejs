@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/jquery&plugins/jquery.min.js"></script>
+    <script src="/jquery&plugins/jquerytypewriter.js"></script>
+</head>
+<script>
+    $(function(){
+        $(".Header").load("/header");
+    });
+</script>
+<header class="Header"></header>
+<body>
+    <h1 id ="title">My House Terminal</h1>
+    <li>
+        <a href="/HomeStock"><H3 id="Depot" class="leftLink" >Home Depot</h3></a>
+        <a href="/Weather"><p id="weatherTitle" class="leftLink" >Weather Info</p></a>
+    </li>
+    <div class="right" id="news"></div>
+    <div id="Live Clock"class="clock"></div>
+    <p class="right" id="IsRaining"></p>
+    <p class="right" id="MaxTemp"></p>
+    <p class="right" id="MinTemp"></p>
+</body>
+<script type="module" src="/js/index.js"></script>
+</html>

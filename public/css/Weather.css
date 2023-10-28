@@ -1,0 +1,55 @@
+@font-face {
+   font-family: "Fixedsys";
+   src: url(../fonts/FSEX300.ttf);
+}
+ 
+:root {
+  --background-color: #070E0B;
+}
+.headerTitle{
+   font-weight: bold;
+   font-size: 22px;
+   text-align: center;
+   font-family: "Fixedsys";
+}
+html {
+   
+   background-color: var(--background-color);
+   color: green;
+   font-family: "Fixedsys";
+}
+a {
+   display: block;
+   color: inherit;
+   text-decoration: none; /* To remove underlines on links */
+   width: 300px;
+}
+
+a:hover {
+   color: greenyellow; /* To change link color on hover */
+}
+.leftLink {
+   width: 300px;
+   font-size: 22px;
+}
+.temp {
+   text-align: left;
+}
+.separation {
+   height: 1px;       /* Make it span the full height of its container */
+   width: 100%;         /* Set the width of the line to 1 pixel */
+   background-color: green ; /* Background color (e.g., black) */
+}
+
+
+.clock {
+  font-size: 30px;
+  text-align: right;
+  position: absolute;
+  right: 1%;
+  top: 150px;
+}
+
+.temp {
+   display: inline-block;
+}

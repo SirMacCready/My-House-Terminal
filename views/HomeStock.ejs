@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeStock</title>
+    <script src="/jquery&plugins/jquery.min.js"></script>
+    <script src="/jquery&plugins/jquerytypewriter.js"></script>
+    <link rel="stylesheet" href="/css/HomeStock.css">
+</head>
+<body>
+    <a href="/index" class="link"><-</a>
+    <h1 id="title" class="link">HomeStock</h1>
+    <div class="separation"></div>
+    <form class="search" method="GET" action="/homestock">
+        <input type="text" name="search" id="search" placeholder="Search/Refresh Items" >
+        <button type="submit">Search</button>
+    </form>
+    <div class="separation"></div>
+    
+    <form method="POST" action="/homestock"> <!-- Updated action attribute -->
+        <input type="text" name="Name" id="Name" placeholder="Name" required>
+        
+        <input type="Brand" name="Brand" id="Brand" placeholder="Brand Name"  required> <!-- Correct input type and name attribute -->
+        
+        <input type="text" name="UseByDate" id="UseByDate" placeholder="Use-By Date" required> <!-- Correct input type and name attribute -->
+        
+        <input type="text" name="AVGTimeToFinish" id="AVGTimeToFinish" placeholder="Average Time to Finish"  required> <!-- Correct input type and name attribute -->
+        
+        <input type="number" id="Quantity" name="Quantity" placeholder="Quantity"  min="0" max="100" step="1" required>
+        
+        <input type="text" name="Place" id="Place" placeholder="Place"  required> 
+        
+        <input type="text" name="Type" id="Type" placeholder="Type"  required> 
+ <!-- Correct input type and name attribute -->
+        
+        <button type="submit">Add Item</button>
+    </form>
+    
+    <div class="separation"></div>
+    <% if(foodList) {foodList.forEach(food => { %>
+        <h2 class="foodlist">Name: <%= food.name %></h2>
+        <h3 class="foodlist">Brand: <%= food.Brand %></h3>
+        <h3 class="foodlist">UseByDate: <%= food.UseByDate %></h3>
+        <h3 class="foodlist">UseByDate: <%= food.AVGTimeToFinish %></h3>
+        <h3 class="foodlist">UseByDate: <%= food.Quantity %></h3>
+        <h3 class="foodlist">Place: <%= food.Place %></h3>
+        <h3 class="foodlist">Type: <%= food.Type %></h3>
+        <button class="deleteButton" data-id="<%= food._id %>">Delete</button> <!-- Correct button class and id attribute -->
+        <div class="separation"></div>
+    <% })}%>
+    <h2 class="foodlist"> No more things to show here</h2>
+    <div class="separation"></div>
+</body>
+<script type="module" src="/js/HomeStock.js"></script>
+</html>
