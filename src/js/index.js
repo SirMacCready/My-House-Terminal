@@ -37,13 +37,8 @@ getAPIData()
   });
 getNewsData()
   .then(data => {
-    const hasAttentat = data.articles.some(article => article.title.includes("attentat"));
-
-    if (hasAttentat) {
-      $('#news').text("Terrorist Attack reported.");
-    } else {
-      $('#news').text("No terrorist attack.");
-    }
+    let randomIndex = Math.floor(Math.random() * data.articles.length);
+    $('#news').text(data.articles[randomIndex].title);
   })
   .then(data => {
     loadWebsite();

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://SirMacCready:ItsFreeRealEstate@myhouseterminal.ktpo8xy.mongodb.net/HomeStock?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://MacCready:PublicPassword@publichouseterminal.a8mxpw2.mongodb.net/PublicHomeStock?retryWrites=true&w=majority');
 
 const foodSchema = {
     name: String,
