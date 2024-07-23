@@ -1,3 +1,8 @@
+To run the project : 
+     **npm start**
+
+
+
 My House Terminal is a project that centralizes everything I need in order to effectively manage my household stocks, check today's weather and the 7-day forecast, and stay updated with the latest news headlines to see if there is anything important happening currently in France.
 
 This is a project I wanted to share publicly to allow people to use its template to create their own house terminal.
