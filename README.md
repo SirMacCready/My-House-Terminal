@@ -1,11 +1,13 @@
 
-  # SmartHome Nexus Dashboard Design
+  # House Terminal Dashboard Design
 
-  This is a code bundle for SmartHome Nexus Dashboard Design. The original project is available at https://www.figma.com/design/SBf8bwkm98U8vScshmSwB4/SmartHome-Nexus-Dashboard-Design.
+  This is a code bundle for SmartHome Nexus Dashboard Design.
 
   ## Running the code
 
   Run `npm i` to install the dependencies.
 
   Run `npm run dev` to start the development server.
-  
+
+  ## Setting up the API Keys
+  Just enter your key directly into the field in the dashboard
