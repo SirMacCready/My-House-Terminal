@@ -1,0 +1,298 @@
+/* Pip-Boy Terminal CRT Styles */
+
+:root {
+    --pipboy-green: #00ff41;
+    --pipboy-green-dark: #008000;
+    --pipboy-black: #000000;
+    --pipboy-bg: #0a1a0a;
+    --pipboy-white: #ffffff;
+    --pipboy-red: #ff0000;
+    --pipboy-glow: 0 0 10px #00ff41;
+    --pipboy-text-glow: 0 0 5px #00ff41;
+}
+
+/* CRT Screen Container */
+.crt-screen {
+    position: relative;
+    background: var(--pipboy-black);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+        inset 0 0 100px rgba(0, 255, 65, 0.1),
+        0 0 50px rgba(0, 255, 65, 0.2);
+}
+
+/* Scanline Overlay */
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 255, 65, 0.03) 50%,
+        transparent 100%
+    );
+    background-size: 100% 4px;
+    animation: scanline-move 8s linear infinite;
+}
+
+@keyframes scanline-move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 100%;
+    }
+}
+
+/* Screen Flicker Effect */
+.screen-flicker {
+    animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 0.98;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.98;
+    }
+}
+
+/* Vignette Effect */
+.vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 40;
+    box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.8);
+}
+
+/* Static Noise Background */
+.static-noise {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 30;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    animation: noise 0.2s steps(2) infinite;
+}
+
+@keyframes noise {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-2%, -2%);
+    }
+    100% {
+        transform: translate(2%, 2%);
+    }
+}
+
+/* Terminal Text */
+.terminal-text {
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    color: var(--pipboy-green);
+    text-shadow: var(--pipboy-text-glow);
+}
+
+/* Terminal Header */
+.terminal-header {
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    color: var(--pipboy-green);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: var(--pipboy-text-glow);
+}
+
+/* Widget Border */
+.widget-border {
+    border: 1px solid var(--pipboy-green);
+    box-shadow: var(--pipboy-glow);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Terminal Button */
+.terminal-button {
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    background: var(--pipboy-black);
+    color: var(--pipboy-green);
+    border: 2px solid var(--pipboy-green);
+    border-top-color: #00ff41;
+    border-left-color: #00ff41;
+    border-bottom-color: #008000;
+    border-right-color: #008000;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--pipboy-glow);
+}
+
+.terminal-button:hover {
+    background: rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 20px #00ff41;
+    color: #00ff41;
+    border-color: #00ff41;
+}
+
+/* Terminal Input */
+.terminal-input {
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    background: var(--pipboy-black);
+    color: var(--pipboy-green);
+    border: 1px solid var(--pipboy-green);
+    padding: 0.5rem;
+    outline: none;
+    box-shadow: var(--pipboy-glow);
+}
+
+.terminal-input::placeholder {
+    color: var(--pipboy-green-dark);
+}
+
+.terminal-input:focus {
+    box-shadow: 0 0 15px #00ff41;
+}
+
+/* Blinking Cursor */
+.cursor-blink {
+    animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes cursor-blink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Toggle Switch ON */
+.toggle-on {
+    color: var(--pipboy-green);
+    text-shadow: var(--pipboy-text-glow);
+}
+
+/* Toggle Switch OFF */
+.toggle-off {
+    color: var(--pipboy-red);
+}
+
+/* Scrollbar Styles */
+.terminal-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-track {
+    background: var(--pipboy-black);
+    border: 1px solid var(--pipboy-green-dark);
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--pipboy-green);
+    border-radius: 4px;
+    box-shadow: var(--pipboy-glow);
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #00ff41;
+}
+
+/* Divider */
+.terminal-divider {
+    border-top: 1px dashed var(--pipboy-green);
+    margin: 0.5rem 0;
+}
+
+/* Power Button */
+.power-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--pipboy-green);
+    background: var(--pipboy-black);
+    color: var(--pipboy-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: var(--pipboy-glow);
+}
+
+.power-button:hover {
+    background: var(--pipboy-green);
+    color: var(--pipboy-black);
+    box-shadow: 0 0 20px #00ff41;
+}
+
+.power-button.active {
+    background: var(--pipboy-red);
+    border-color: var(--pipboy-red);
+    color: white;
+    box-shadow: 0 0 20px #ff0000;
+}
+
+/* ASCII Icons */
+.ascii-icon {
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    font-size: 2rem;
+    color: var(--pipboy-green);
+    text-shadow: var(--pipboy-text-glow);
+}
+
+/* Status Bar */
+.status-bar {
+    font-family: "IBM Plex Mono", "Courier New", monospace;
+    background: rgba(0, 255, 65, 0.1);
+    border-top: 1px solid var(--pipboy-green);
+    color: var(--pipboy-green);
+    padding: 0.5rem 1rem;
+    text-shadow: var(--pipboy-text-glow);
+}
+
+/* Glitch Effect (subtle) */
+.glitch {
+    animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+    0%,
+    90%,
+    100% {
+        transform: translate(0);
+    }
+    92% {
+        transform: translate(-2px, 1px);
+    }
+    94% {
+        transform: translate(1px, -1px);
+    }
+    96% {
+        transform: translate(-1px, 2px);
+    }
+    98% {
+        transform: translate(2px, -2px);
+    }
+}
