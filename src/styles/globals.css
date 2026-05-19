@@ -1,0 +1,206 @@
+/* Base Styles */
+:root {
+    --pipboy-bg: #0a1a0a;
+    --pipboy-bg-dark: #000000;
+    --pipboy-green: #00ff41;
+    --pipboy-green-dark: #008000;
+    --pipboy-white: #ffffff;
+}
+
+@tailwind utilities;
+
+/* Terminal Font */
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+body {
+    font-family: "Share Tech Mono", monospace;
+    background-color: var(--pipboy-bg);
+    color: var(--pipboy-green);
+    overflow-x: hidden;
+}
+
+/* CRT Screen Effects - Responsive */
+.crt-screen {
+    position: relative;
+    background-color: var(--pipboy-bg-dark);
+    border: 4px solid #333;
+    border-radius: 8px;
+    box-shadow:
+        0 0 0 2px #00ff41 inset,
+        0 0 20px rgba(0, 255, 65, 0.3);
+}
+
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 1px,
+        rgba(0, 255, 65, 0.05) 1px,
+        rgba(0, 255, 65, 0.05) 2px
+    );
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        transparent 0%,
+        rgba(0, 0, 0, 0.5) 100%
+    );
+    pointer-events: none;
+}
+
+.static-noise {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQrSTfOiYkVJQBmpbq2L6iZavPnAPcoU0dSw0SUTqz/GtrE+eYIqCqNEo6QG0HIHkYQIa94lnpiHxquUW/FF1Gzn+dUeZz59t2448d7y4t2f9X23l1s7w+2C0Jz5y4X2X6Y8B4x48d7y4t2f9X2X6Y8B4x48d7y4t2f9X2X6Y8B4");
+    opacity: 0.05;
+    pointer-events: none;
+    animation: noise 0.5s steps(2) infinite;
+}
+
+@keyframes noise {
+    to {
+        transform: translate3d(-5%, -10%, 0);
+    }
+}
+
+.screen-flicker {
+    animation: flicker 0.15s infinite alternate;
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 0.97;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.94;
+    }
+}
+
+/* Widget Styles */
+.widget-border {
+    border: 1px solid var(--pipboy-green);
+    background-color: rgba(10, 26, 10, 0.8);
+    box-shadow:
+        0 0 5px rgba(0, 255, 65, 0.2),
+        inset 0 0 5px rgba(0, 255, 65, 0.1);
+}
+
+/* Terminal Text */
+.terminal-text {
+    color: var(--pipboy-green);
+    font-family: "Share Tech Mono", monospace;
+}
+
+.terminal-header {
+    color: var(--pipboy-green);
+    font-family: "Share Tech Mono", monospace;
+    font-weight: bold;
+    text-shadow: 0 0 5px var(--pipboy-green);
+}
+
+.toggle-on {
+    color: var(--pipboy-green);
+    text-shadow: 0 0 5px var(--pipboy-green);
+}
+
+.toggle-off {
+    color: var(--pipboy-green-dark);
+    opacity: 0.7;
+}
+
+.cursor-blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    from,
+    to {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Scrollbar */
+.terminal-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-track {
+    background: var(--pipboy-bg-dark);
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--pipboy-green-dark);
+    border-radius: 3px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--pipboy-green);
+}
+
+/* Responsive CRT Effects */
+@media (max-width: 768px) {
+    .scanlines {
+        background: repeating-linear-gradient(
+            to bottom,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 65, 0.03) 2px,
+            rgba(0, 255, 65, 0.03) 4px
+        );
+    }
+
+    .static-noise {
+        opacity: 0.02;
+    }
+}
+
+/* Focus Styles for Accessibility */
+:focus-visible {
+    outline: 2px solid var(--pipboy-green);
+    outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .screen-flicker {
+        animation: none;
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+    .crt-screen {
+        border-width: 2px;
+        border-radius: 4px;
+    }
+    .widget-border {
+        border-width: 1px;
+    }
+}
