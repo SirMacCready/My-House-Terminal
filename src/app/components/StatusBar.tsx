@@ -2,6 +2,17 @@ import { useEffect, useState } from "react";
 
 export function StatusBar() {
   const [time, setTime] = useState(new Date());
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,9 +34,21 @@ export function StatusBar() {
   };
 
   return (
-    <div className="status-bar text-sm">
-      HOUSE TERMINAL | {formatDate(time)} | {formatTime(time)} |{" "}
-      <span className="toggle-on">ONLINE</span>
+    <div className="status-bar text-xs sm:text-sm p-2 sm:p-3 border-t border-[var(--pipboy-green-dark)]">
+      {isMobile ? (
+        <>
+          <span>HOUSE TERMINAL | </span>
+          <span className="toggle-on">ONLINE</span>
+          <div className="mt-1">
+            {formatDate(time)} | {formatTime(time)}
+          </div>
+        </>
+      ) : (
+        <>
+          HOUSE TERMINAL | {formatDate(time)} | {formatTime(time)} |{" "}
+          <span className="toggle-on">ONLINE</span>
+        </>
+      )}
     </div>
   );
 }

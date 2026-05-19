@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { DeviceWidget } from "./components/DeviceWidget";
+import { ToDoWidget } from "./components/ToDoWidget";
 import { WeatherWidget } from "./components/WeatherWidget";
 import { NewsWidget } from "./components/NewsWidget";
 import { StatusBar } from "./components/StatusBar";
 import { PowerButton } from "./components/PowerButton";
-import { TerminalCLI } from "./components/TerminalCLI";
 import { BootScreen } from "./components/BootScreen";
 
 export default function App() {
@@ -15,8 +14,8 @@ export default function App() {
   }
 
   return (
-    <div className="w-full min-h-screen bg-black p-4 md:p-8 flex items-center justify-center">
-      <div className="crt-screen w-full max-w-7xl h-[95vh] flex flex-col relative">
+    <div className="w-full min-h-screen bg-black p-2 sm:p-4 md:p-6 lg:p-8 flex items-center justify-center">
+      <div className="crt-screen w-full max-w-7xl h-[90vh] sm:h-[95vh] flex flex-col relative">
         {/* CRT Effects */}
         <div className="scanlines"></div>
         <div className="vignette"></div>
@@ -24,36 +23,31 @@ export default function App() {
 
         {/* Content */}
         <div className="relative z-10 flex flex-col h-full screen-flicker">
-          {/* Header with Power Button */}
-          <div className="p-4 md:p-6 border-b border-[#00ff41] flex items-center justify-between">
-            <h1 className="terminal-header text-2xl md:text-4xl glitch">
+          {/* Header */}
+          <div className="p-3 sm:p-4 md:p-6 border-b border-[#00ff41] flex items-center justify-between">
+            <h1 className="terminal-header text-lg sm:text-2xl md:text-3xl lg:text-4xl glitch truncate">
               HOUSE TERMINAL
             </h1>
             <PowerButton />
           </div>
 
-          {/* Main Dashboard Grid */}
-          <div className="flex-1 p-4 md:p-6 overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 h-full">
-              {/* Left Column - Device Controls */}
-              <div className="h-full min-h-[300px] md:min-h-0">
-                <DeviceWidget />
+          {/* Main Dashboard - THIS IS THE KEY FIX */}
+          <div className="flex-1 p-2 sm:p-3 md:p-4 lg:p-6 overflow-y-auto">
+            {" "}
+            {/* Added overflow-y-auto here */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 min-h-full">
+              {/* Widgets - Each has its own scrollable area */}
+              <div className="h-full min-h-[250px]">
+                <ToDoWidget />
               </div>
-
-              {/* Center Column - Weather */}
-              <div className="h-full min-h-[400px] md:min-h-0">
+              <div className="h-full min-h-[300px] order-first sm:order-none">
                 <WeatherWidget />
               </div>
-
-              {/* Right Column - News Feed */}
-              <div className="h-full min-h-[300px] md:min-h-0">
+              <div className="h-full min-h-[250px]">
                 <NewsWidget />
               </div>
             </div>
           </div>
-
-          {/* Terminal Input */}
-          <TerminalCLI />
 
           {/* Status Bar */}
           <StatusBar />

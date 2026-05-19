@@ -1,18 +1,50 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+
+type CurrentWeather = {
+  temp: number | null;
+  condition: string;
+  icon: string;
+};
+
+type ForecastDay = {
+  day: string;
+  temp: number;
+  icon: string;
+};
+
+type OpenWeatherCurrentResponse = {
+  main: {
+    temp: number;
+  };
+  weather: {
+    main: string;
+  }[];
+};
+
+type OpenWeatherForecastResponse = {
+  list: {
+    dt: number;
+    main: {
+      temp: number;
+    };
+    weather: {
+      main: string;
+    }[];
+  }[];
+};
 
 export function WeatherWidget() {
-  const [currentWeather, setCurrentWeather] = useState({
+  const [currentWeather, setCurrentWeather] = useState<CurrentWeather>({
     temp: null,
     condition: "",
     icon: "",
   });
-  const [forecast, setForecast] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [apiKey, setApiKey] = useState("");
-  const [showApiInput, setShowApiInput] = useState(false);
+  const [forecast, setForecast] = useState<ForecastDay[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [apiKey, setApiKey] = useState<string>("");
+  const [showApiInput, setShowApiInput] = useState<boolean>(false);
 
-  // Load saved API key from localStorage
   useEffect(() => {
     const savedApiKey = localStorage.getItem("weatherApiKey");
     if (savedApiKey) {
@@ -22,7 +54,6 @@ export function WeatherWidget() {
     }
   }, []);
 
-  // Fetch weather data
   useEffect(() => {
     if (apiKey) {
       fetchWeather();
@@ -34,42 +65,60 @@ export function WeatherWidget() {
     setError(null);
     try {
       // Get user location
-      const position = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
+      const position = await new Promise<GeolocationPosition>(
+        (resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        },
+      );
       const { latitude, longitude } = position.coords;
 
       // Fetch current weather
       const currentWeatherResponse = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`,
       );
-      const currentWeatherData = await currentWeatherResponse.json();
-      setCurrentWeather({
-        temp: Math.round(currentWeatherData.main.temp),
-        condition: currentWeatherData.weather[0].main,
-        icon: getWeatherIcon(currentWeatherData.weather[0].main),
-      });
+      const currentWeatherData: OpenWeatherCurrentResponse =
+        await currentWeatherResponse.json();
+
+      if (currentWeatherResponse.ok) {
+        setCurrentWeather({
+          temp: Math.round(currentWeatherData.main.temp),
+          condition: currentWeatherData.weather[0].main,
+          icon: getWeatherIcon(currentWeatherData.weather[0].main),
+        });
+      } else {
+        throw new Error(
+          currentWeatherData.weather?.[0]?.main || "Unknown error",
+        );
+      }
 
       // Fetch 5-day forecast
       const forecastResponse = await fetch(
         `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`,
       );
-      const forecastData = await forecastResponse.json();
-      const dailyForecast = forecastData.list.filter(
-        (item, index) => index % 8 === 0,
-      ); // One forecast per day
-      setForecast(
-        dailyForecast.map((item) => ({
-          day: new Date(item.dt * 1000)
-            .toLocaleDateString("en-US", { weekday: "short" })
-            .toUpperCase(),
-          temp: Math.round(item.main.temp),
-          icon: getWeatherIcon(item.weather[0].main),
-        })),
-      );
+      const forecastData: OpenWeatherForecastResponse =
+        await forecastResponse.json();
+
+      if (forecastResponse.ok) {
+        const dailyForecast = forecastData.list.filter(
+          (_, index) => index % 8 === 0,
+        );
+        setForecast(
+          dailyForecast.map((item) => ({
+            day: new Date(item.dt * 1000)
+              .toLocaleDateString("en-US", { weekday: "short" })
+              .toUpperCase(),
+            temp: Math.round(item.main.temp),
+            icon: getWeatherIcon(item.weather[0].main),
+          })),
+        );
+      } else {
+        throw new Error("Failed to fetch forecast");
+      }
     } catch (err) {
       setError(
-        "Failed to fetch weather data. Check your API key and location access.",
+        err instanceof Error
+          ? err.message
+          : "Failed to fetch weather data. Check your API key and location access.",
       );
       console.error(err);
     } finally {
@@ -77,16 +126,14 @@ export function WeatherWidget() {
     }
   };
 
-  // Save API key to localStorage
-  const handleApiKeySubmit = (e) => {
+  const handleApiKeySubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     localStorage.setItem("weatherApiKey", apiKey);
     setShowApiInput(false);
     fetchWeather();
   };
 
-  // Helper function to map weather conditions to icons
-  const getWeatherIcon = (condition) => {
+  const getWeatherIcon = (condition: string): string => {
     switch (condition.toLowerCase()) {
       case "clear":
         return "☀";
@@ -105,24 +152,28 @@ export function WeatherWidget() {
 
   if (showApiInput) {
     return (
-      <div className="widget-border p-4 h-full flex flex-col items-center justify-center">
-        <h2 className="terminal-header text-xl mb-4">Enter API Key</h2>
+      <div className="widget-border p-3 sm:p-4 h-full flex flex-col items-center justify-center">
+        <h2 className="terminal-header text-lg sm:text-xl mb-3 sm:mb-4">
+          ENTER_API_KEY<span className="cursor-blink">_</span>
+        </h2>
         <form
           onSubmit={handleApiKeySubmit}
-          className="flex flex-col items-center"
+          className="flex flex-col items-center w-full"
         >
           <input
             type="text"
             value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setApiKey(e.target.value)
+            }
             placeholder="OpenWeatherMap API Key"
-            className="p-2 mb-4 text-[var(--pipboy-green)] rounded border-2 border-green-500 border-solid"
+            className="p-2 mb-3 sm:mb-4 text-[var(--pipboy-green)] rounded border-2 border-green-500 border-solid w-full text-xs sm:text-sm"
           />
           <button
             type="submit"
-            className="bg-[var(--pipboy-green-dark)] text-white p-2 rounded"
+            className="bg-[var(--pipboy-green-dark)] text-white p-2 rounded w-full text-xs sm:text-sm"
           >
-            Save API Key
+            SAVE_API_KEY
           </button>
         </form>
       </div>
@@ -131,49 +182,68 @@ export function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="widget-border p-4 h-full flex items-center justify-center">
-        Loading weather data...
+      <div className="widget-border p-3 sm:p-4 h-full flex items-center justify-center">
+        <div className="terminal-text text-xs sm:text-sm">
+          LOADING_WEATHER...
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="widget-border p-4 h-full flex flex-col items-center justify-center">
-        <div>{error}</div>
+      <div className="widget-border p-3 sm:p-4 h-full flex flex-col items-center justify-center">
+        <div className="terminal-text mb-3 sm:mb-4 text-xs sm:text-sm text-center">
+          {error}
+        </div>
         <button
           onClick={() => setShowApiInput(true)}
-          className="mt-4 bg-gray-500 text-white p-2 rounded"
+          className="bg-gray-500 text-white p-2 rounded text-xs sm:text-sm"
         >
-          Change API Key
+          CHANGE_API_KEY
         </button>
       </div>
     );
   }
 
   return (
-    <div className="widget-border p-4 h-full flex flex-col">
-      <h2 className="terminal-header text-xl mb-4">
+    <div className="widget-border p-3 sm:p-4 h-full flex flex-col">
+      <h2 className="terminal-header text-lg sm:text-xl mb-3 sm:mb-4">
         WEATHER_STATUS<span className="cursor-blink">_</span>
       </h2>
 
       <div className="flex-1 flex flex-col items-center justify-center">
-        <div className="ascii-icon text-6xl mb-4">{currentWeather.icon}</div>
-        <div className="terminal-text text-5xl mb-2">
+        {/* Weather Icon - Responsive sizing */}
+        <div className="ascii-icon text-4xl sm:text-5xl md:text-6xl mb-2 sm:mb-3">
+          {currentWeather.icon}
+        </div>
+
+        {/* Temperature - Responsive font size */}
+        <div className="terminal-text text-3xl sm:text-4xl md:text-5xl mb-1 sm:mb-2">
           {currentWeather.temp}°C
         </div>
-        <div className="terminal-text text-lg mb-6">
+
+        {/* Condition - Responsive font size */}
+        <div className="terminal-text text-base sm:text-lg md:text-xl mb-3 sm:mb-4 md:mb-6">
           {currentWeather.condition}
         </div>
 
-        <div className="terminal-divider w-full"></div>
+        {/* Divider - Only show on larger screens */}
+        <div className="terminal-divider w-full hidden sm:block"></div>
 
-        <div className="grid grid-cols-3 gap-4 mt-6 w-full">
+        {/* Forecast - Grid responsive */}
+        <div className="grid grid-cols-3 gap-1 sm:gap-2 md:gap-4 mt-3 sm:mt-4 md:mt-6 w-full">
           {forecast.map((day, index) => (
             <div key={index} className="text-center">
-              <div className="terminal-text text-sm mb-2">{day.day}</div>
-              <div className="ascii-icon text-2xl mb-2">{day.icon}</div>
-              <div className="terminal-text text-lg">{day.temp}°</div>
+              <div className="terminal-text text-xs sm:text-sm mb-1">
+                {day.day}
+              </div>
+              <div className="ascii-icon text-xl sm:text-2xl mb-1">
+                {day.icon}
+              </div>
+              <div className="terminal-text text-sm sm:text-base">
+                {day.temp}°
+              </div>
             </div>
           ))}
         </div>

@@ -27,7 +27,7 @@ export function BootScreen({ onBootComplete }: BootScreenProps) {
         }
         return prev;
       });
-    }, 400);
+    }, 300); // Faster on mobile
 
     const progressInterval = setInterval(() => {
       setBootProgress((prev) => {
@@ -37,9 +37,9 @@ export function BootScreen({ onBootComplete }: BootScreenProps) {
           setTimeout(() => onBootComplete(), 500);
           return 100;
         }
-        return prev + 2;
+        return prev + (window.innerWidth < 768 ? 3 : 2); // Faster progress on mobile
       });
-    }, 50);
+    }, 40); // Faster updates on mobile
 
     return () => {
       clearInterval(messageInterval);
@@ -48,15 +48,15 @@ export function BootScreen({ onBootComplete }: BootScreenProps) {
   }, [onBootComplete]);
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-black">
-      <div className="w-full max-w-2xl p-8">
-        <div className="terminal-header text-3xl mb-8 text-center">
+    <div className="w-full h-full flex items-center justify-center bg-black p-4">
+      <div className="w-full max-w-xl sm:max-w-2xl p-4 sm:p-6 md:p-8">
+        <div className="terminal-header text-2xl sm:text-3xl md:text-4xl mb-6 sm:mb-8 text-center">
           HOUSE TERMINAL
         </div>
 
-        <div className="space-y-2 mb-8">
+        <div className="space-y-1 sm:space-y-2 mb-6 sm:mb-8">
           {bootMessages.slice(0, currentMessage + 1).map((message, index) => (
-            <div key={index} className="terminal-text text-sm">
+            <div key={index} className="terminal-text text-xs sm:text-sm">
               {message}
               {index === currentMessage && (
                 <span className="cursor-blink">_</span>
@@ -65,11 +65,11 @@ export function BootScreen({ onBootComplete }: BootScreenProps) {
           ))}
         </div>
 
-        <div className="widget-border p-4">
-          <div className="terminal-text text-sm mb-2">
+        <div className="widget-border p-3 sm:p-4">
+          <div className="terminal-text text-xs sm:text-sm mb-2">
             LOADING: {bootProgress}%
           </div>
-          <div className="w-full bg-black border border-[#008000] h-6">
+          <div className="w-full bg-black border border-[#008000] h-4 sm:h-6">
             <div
               className="h-full bg-[#00ff41] transition-all duration-100"
               style={{
